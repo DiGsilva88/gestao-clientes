@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\client;
+use App\Models\Clientlient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,9 +19,8 @@ class ClientFactory extends Factory
     {
         return [
             //
-             'nome' => fake()->nome(),
+             'nome' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
               'morada' => fake()->address(),
               'localidade'=> fake()->city(),
               'telefone'=> fake()->phoneNumber(),

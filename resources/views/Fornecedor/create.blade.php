@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lista de clientes</title>
+    <title>Lista de fornecedores</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,9 +21,9 @@
 
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h2 text-center">Inserir novo cliente</h1>
-            {{-- <a href="{{route('client.create')}}"class="btn btn-primary">Inserir novo cliente</a> --}}
-            {{-- //botão para inserir novo cliente --}}
+            <h1 class="h2 text-center">Inserir novo fornecedor</h1>
+            {{-- <a href="{{route('fornecedor.create')}}"class="btn btn-primary">Inserir novo fornecedor</a> --}}
+            {{-- //botão para inserir novo fornecedor --}}
             {{-- definir a rota =route --}}
             {{-- depois chamamos a rota e usamos as {{}}--}}
 
@@ -36,7 +36,7 @@
     </div>
 @endif
 
-<form action="{{route('client.store')}}" method="POST">
+<form action="{{route('fornecedor.store')}}" method="POST">
     {{-- usar metodo post que vai gravar--}}
 {{-- construir o form --}}
 @csrf
@@ -74,7 +74,7 @@
 <!-- Botões de Ação Alinhados -->
      <div class="d-flex justify-content-end gap-2 mt-4">
     <a href="#" class="btn btn-secondary">Cancelar</a>
-    <button type="submit" class="btn btn-success">Gravar Cliente</button>
+    <button type="submit" class="btn btn-success">Gravar Fornecedor</button>
     </div>
 
 </form>

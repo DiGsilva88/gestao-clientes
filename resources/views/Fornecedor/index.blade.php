@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Clientes</title>
+    <title>Lista de Fornecedores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -19,7 +19,7 @@
             vertical-align: middle;
         }
         .search-bar {
-            max-width: 400px;
+            max-width: 400px; /* ← limita a largura da pesquisa */
         }
     </style>
 </head>
@@ -32,18 +32,19 @@
         <!-- Cabeçalho + botão inserir -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="fw-bold display-6 text-dark">
-                <i class="bi bi-people me-2"></i>Clientes
+                <i class="bi bi-truck me-2"></i>Fornecedores
             </h1>
-            <a href="{{ route('client.create') }}" class="btn btn-primary shadow-sm">
-                <i class="bi bi-plus-lg me-1"></i> Novo Cliente
+            <a href="{{ route('fornecedor.create') }}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i> Novo Fornecedor
             </a>
         </div>
 
         <!-- Barra de pesquisa compacta -->
-        <form action="{{ route('client.index') }}" method="GET" class="mb-4">
+        <form action="{{ route('fornecedor.index') }}" method="GET" class="mb-4">
             <div class="input-group search-bar shadow-sm">
                 <span class="input-group-text bg-white border-end-0">
                     <i class="bi bi-search text-muted"></i>
+
                 </span>
                 <input type="text"
                        name="search"
@@ -51,15 +52,17 @@
                        placeholder="Pesquisar por nome ou email..."
                        value="{{ request('search') }}">
                 @if(request('search'))
-                    <a href="{{ route('client.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('fornecedor.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-x-lg"></i>
                     </a>
+
                 @endif
                 <button type="submit" class="btn btn-dark">
                     Pesquisar
                 </button>
             </div>
         </form>
+
 
         {{-- Mensagem de sucesso --}}
         @if (session('success'))
@@ -69,6 +72,7 @@
             </div>
         @endif
 
+        
         <!-- Tabela -->
         <div class="card shadow-sm">
             <div class="card-body p-0">
@@ -82,27 +86,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($clients as $client)
+                        @foreach ($fornecedores as $fornecedor)
                             <tr>
-                                <td class="ps-4 text-muted">{{ $client->id }}</td>
-                                <td class="fw-semibold">{{ $client->nome }}</td>
-                                <td class="text-muted">{{ $client->email }}</td>
+                                <td class="ps-4 text-muted">{{ $fornecedor->id }}</td>
+                                <td class="fw-semibold">{{ $fornecedor->nome }}</td>
+                                <td class="text-muted">{{ $fornecedor->email }}</td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex gap-2 justify-content-end">
 
-                                        <a href="{{ route('client.show', $client->id) }}"
+                                        <a href="{{ route('fornecedor.show', $fornecedor->id) }}"
                                            class="btn btn-outline-primary btn-sm px-3">
                                             <i class="bi bi-eye me-1"></i>Ver
                                         </a>
 
-                                        <a href="{{ route('client.edit', $client->id) }}"
+                                        <a href="{{ route('fornecedor.edit', $fornecedor->id) }}"
                                            class="btn btn-outline-warning btn-sm px-3">
                                             <i class="bi bi-pencil me-1"></i>Editar
                                         </a>
 
-                                        <form action="{{ route('client.destroy', $client->id) }}"
+                                        <form action="{{ route('fornecedor.destroy', $fornecedor->id) }}"
                                               method="POST"
-                                              onsubmit="return confirm('Tem a certeza que quer eliminar este cliente?')">
+                                              onsubmit="return confirm('Tem a certeza que quer eliminar este fornecedor?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger btn-sm px-3">

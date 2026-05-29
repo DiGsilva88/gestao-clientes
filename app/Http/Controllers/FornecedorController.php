@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Models\Fornecedor;
 use Illuminate\Http\Request;
 
-class ClientController extends Controller
+class FornecedorController extends Controller
 {
     /**
-     * INDEX - Lista todos os clientes
+     * INDEX - Lista todos os fornecedores
      *
-     * Rota: GET /clients
-     * Chamado quando o utilizador acede à página principal de clientes.
-     * Vai buscar todos os registos da tabela 'clients' e envia-os para a view.
+     * Rota: GET /fornecedores
+     * Chamado quando o utilizador acede à página principal de fornecedores.
+     * Vai buscar todos os registos da tabela 'fornecedores' e envia-os para a view.
      */
 /**
  * Display a listing of the resource.
@@ -20,33 +20,33 @@ class ClientController extends Controller
 public function index(Request $request)// O Request $request é necessário para receber os dados de pesquisa (query string)
 {
     // Se existe texto na pesquisa, filtra — senão mostra todos
-    $clients = Client::when($request->search, function ($query, $search) {
+    $fornecedores = Fornecedor::when($request->search, function ($query, $search) {
         $query->where('nome', 'like', '%' . $search . '%')
               ->orWhere('email', 'like', '%' . $search . '%');
     })->get();
 
-    return view('Client.index', compact('clients'));
+    return view('Fornecedor.index', compact('fornecedores'));
 }
 
     /**
-     * CREATE - Mostra o formulário para criar um novo cliente
+     * CREATE - Mostra o formulário para criar um novo fornecedor
      *
-     * Rota: GET /clients/create
+     * Rota: GET /fornecedores/create
      * Apenas carrega a view com o formulário vazio.
      * Não faz nenhuma operação na base de dados.
      */
 
     public function create()
     {
-        // Carrega a view 'resources/views/Client/create.blade.php'
-        return view('Client.create');
+        // Carrega a view 'resources/views/Fornecedor/create.blade.php'
+        return view('Fornecedor.create');
     }
 
 
     /**
-     * STORE - Guarda um novo cliente na base de dados
+     * STORE - Guarda um novo fornecedor na base de dados
      *
-     * Rota: POST /clients
+     * Rota: POST /fornecedores
      * Chamado quando o utilizador submete o formulário de criação.
      * Recebe os dados do formulário através do objeto $request.
      */
@@ -59,16 +59,16 @@ public function index(Request $request)// O Request $request é necessário para
             'nome'       => 'required|max:100',   // obrigatório, máximo 100 caracteres
             'morada'     => 'nullable|max:100',   // opcional, máximo 100 caracteres
             'localidade' => 'nullable|max:30',    // opcional, máximo 30 caracteres
-            'email'      => 'required|email|unique:clients,email',
+            'email'      => 'required|email|unique:fornecedors,email',
                             // obrigatório, formato email válido,
-                            // e único na coluna 'email' da tabela 'clients'
+                            // e único na coluna 'email' da tabela 'fornecedors'
             'telefone'   => 'nullable|max:15',    // opcional, máximo 15 caracteres
         ]);
 
         // INSERÇÃO: cria um novo registo na base de dados com os dados validados.
         // O método create() faz o INSERT INTO automaticamente.
-        // Atenção: os campos têm de estar na propriedade $fillable do Model Client.
-        Client::create([
+        // Atenção: os campos têm de estar na propriedade $fillable do Model Fornecedor.
+        Fornecedor::create([
             'nome'       => $request->nome,
             'morada'     => $request->morada,
             'localidade' => $request->localidade,
@@ -76,54 +76,54 @@ public function index(Request $request)// O Request $request é necessário para
             'email'      => $request->email,
         ]);
 
-        // Redireciona para a lista de clientes (rota 'clients.index')
+        // Redireciona para a lista de fornecedores (rota 'fornecedores.index')
         // with('success', '...') envia uma mensagem temporária (flash message)
         // que pode ser mostrada na view com: session('success')
-        return redirect()->route('client.index')
-                         ->with('success', 'Cliente inserido com sucesso');
+        return redirect()->route('fornecedor.index')
+                         ->with('success', 'Fornecedor inserido com sucesso');
     }
 
 
     /**
-     * SHOW - Mostra os detalhes de um cliente específico
+     * SHOW - Mostra os detalhes de um fornecedor específico
      *
-     * Rota: GET /clients/{id}
-     * Recebe o $id do cliente através do URL (ex: /clients/3).
+     * Rota: GET /fornecedores/{id}
+     * Recebe o $id do fornecedor através do URL (ex: /fornecedores/3).
      */
     public function show($id) // O nome do parâmetro $id tem de ser igual ao definido na rota (Route::resource define isso automaticamente).
     {
-        // findOrFail() procura o cliente pelo ID na base de dados.
+        // findOrFail() procura o fornecedor pelo ID na base de dados.
         // Se não encontrar, lança automaticamente um erro 404 (página não encontrada).
         // Alternativa: find($id) retornaria null em vez de erro 404.
-        $client = Client::findOrFail($id);
+        $fornecedor = Fornecedor::findOrFail($id);
 
-        // Envia os dados do cliente para a view de detalhe
-        return view('Client.show', compact('client'));
+        // Envia os dados do fornecedor para a view de detalhe
+        return view('Fornecedor.show', compact('fornecedor'));
     }
 
 
     /**
-     * EDIT - Mostra o formulário para editar um cliente existente
+     * EDIT - Mostra o formulário para editar um fornecedor existente
      *
-     * Rota: GET /clients/{id}/edit
+     * Rota: GET /fornecedores/{id}/edit
      * Semelhante ao show(), mas carrega uma view com formulário preenchido
-     * com os dados atuais do cliente para o utilizador poder alterar.
+     * com os dados atuais do fornecedor para o utilizador poder alterar.
      */
     public function edit($id)
     {
-        // Procura o cliente pelo ID — dá erro 404 se não existir
-        $client = Client::findOrFail($id);
+        // Procura o fornecedor pelo ID — dá erro 404 se não existir
+        $fornecedor = Fornecedor::findOrFail($id);
 
-        // Carrega a view 'resources/views/Client/edit.blade.php'
-        // com os dados do cliente já preenchidos no formulário
-        return view('Client.edit', compact('client'));
+        // Carrega a view 'resources/views/Fornecedor/edit.blade.php'
+        // com os dados do fornecedor já preenchidos no formulário
+        return view('Fornecedor.edit', compact('fornecedor'));
     }
 
 
     /**
-     * UPDATE - Guarda as alterações de um cliente existente
+     * UPDATE - Guarda as alterações de um fornecedor existente
      *
-     * Rota: PUT /clients/{id}
+     * Rota: PUT /fornecedores/{id}
      * Chamado quando o utilizador submete o formulário de edição.
      * Nota: formulários HTML só suportam GET e POST, por isso na view
      * é necessário usar @method('PUT') dentro do formulário.
@@ -135,22 +135,22 @@ public function index(Request $request)// O Request $request é necessário para
             'nome'       => 'required|max:100',
             'morada'     => 'nullable|max:100',
             'localidade' => 'nullable|max:30',
-            'email'      => 'required|email|unique:clients,email,' . $id,
+            'email'      => 'required|email|unique:fornecedors,email,' . $id,
                             // O ', $id' no final diz ao Laravel para IGNORAR
                             // este registo na verificação de unicidade.
-                            // Sem isto, ao guardar o mesmo email do cliente
+                            // Sem isto, ao guardar o mesmo email do fornecedor
                             // daria erro de "email já existe".
             'telefone'   => 'nullable|max:15',
         ]);
 
-        // Procura o cliente a atualizar — dá erro 404 se não existir
-        $client = Client::findOrFail($id);
+        // Procura o fornecedor a atualizar — dá erro 404 se não existir
+        $fornecedor = Fornecedor::findOrFail($id);
 
-        $client->nome=$request->nome;
-        $client->morada=$request->morada;
-        $client->localidade=$request->localidade;
-        $client->email=$request->email;
-        $client->telefone=$request->telefone; // Atribui os novos valores aos campos do cliente
+        $fornecedor->nome=$request->nome;
+        $fornecedor->morada=$request->morada;
+        $fornecedor->localidade=$request->localidade;
+        $fornecedor->email=$request->email;
+        $fornecedor->telefone=$request->telefone; // Atribui os novos valores aos campos do fornecedor
 
 
 
@@ -159,33 +159,33 @@ public function index(Request $request)// O Request $request é necessário para
         // $request->all() retorna todos os campos enviados no formulário.
         // Alternativa mais segura: $request->only(['nome','morada',...])
         // para especificar exatamente quais campos podem ser atualizados.
-        $client->update($request->all());
+        $fornecedor->update($request->all());
 
-        return redirect()->route('client.index') // redireciona para a lista de clientes
-                         ->with('success', 'Cliente atualizado com sucesso!');
-                        //  redireciona para a lista de clientes com mensagem de sucesso
+        return redirect()->route('fornecedor.index') // redireciona para a lista de fornecedores
+                         ->with('success', 'Fornecedor atualizado com sucesso!');
+                        //  redireciona para a lista de fornecedores com mensagem de sucesso
     }
 
 
     /**
-     * DESTROY - Elimina um cliente da base de dados
+     * DESTROY - Elimina um fornecedor da base de dados
      *
-     * Rota: DELETE /clients/{id}
-     * Chamado quando o utilizador confirma a eliminação de um cliente.
+     * Rota: DELETE /fornecedores/{id}
+     * Chamado quando o utilizador confirma a eliminação de um fornecedor.
      * Nota: formulários HTML não suportam DELETE, por isso na view
      * é necessário usar @method('DELETE') dentro do formulário.
      */
     public function destroy($id)
     {
-        // Procura o cliente a eliminar — dá erro 404 se não existir
-        $client = Client::findOrFail($id);
+        // Procura o fornecedor a eliminar — dá erro 404 se não existir
+        $fornecedor = Fornecedor::findOrFail($id);
 
         // delete() faz o DELETE FROM na base de dados
-        $client->delete();
+        $fornecedor->delete();
 
         // Redireciona para a lista após eliminar,
         // com mensagem de confirmação para mostrar ao utilizador
-        return redirect()->route('client.index')
-                         ->with('success', 'Cliente eliminado com sucesso!');
+        return redirect()->route('fornecedor.index')
+                         ->with('success', 'Fornecedor eliminado com sucesso!');
     }
 }
