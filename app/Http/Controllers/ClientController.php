@@ -19,11 +19,24 @@ class ClientController extends Controller
  */
 public function index(Request $request)// O Request $request é necessário para receber os dados de pesquisa (query string)
 {
-    // Se existe texto na pesquisa, filtra — senão mostra todos
-    $clients = Client::when($request->search, function ($query, $search) {
-        $query->where('nome', 'like', '%' . $search . '%')
-              ->orWhere('email', 'like', '%' . $search . '%');
-    })->get();
+   // Pesquisa
+    $search = $request->search;
+
+    // Ordem alfabética
+    $ordem = $request->ordem ?? 'asc';
+
+    $clients = Client::when($search, function ($query, $search) {
+
+            $query->where('nome', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+
+        })
+
+        ->orderBy('nome', $ordem)
+
+        ->paginate(10)
+
+        ->appends($request->query());
 
     return view('Client.index', compact('clients'));
 }

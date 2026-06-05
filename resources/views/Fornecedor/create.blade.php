@@ -22,6 +22,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h2 text-center">Inserir novo fornecedor</h1>
+            
             {{-- <a href="{{route('fornecedor.create')}}"class="btn btn-primary">Inserir novo fornecedor</a> --}}
             {{-- //botão para inserir novo fornecedor --}}
             {{-- definir a rota =route --}}

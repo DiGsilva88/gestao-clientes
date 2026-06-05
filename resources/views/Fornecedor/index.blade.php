@@ -31,6 +31,7 @@
 
         <!-- Cabeçalho + botão inserir -->
         <div class="d-flex justify-content-between align-items-center mb-3">
+            {{-- // estrutura do cabeçalho e botão inserir --}}
             <h1 class="fw-bold display-6 text-dark">
                 <i class="bi bi-truck me-2"></i>Fornecedores
             </h1>
@@ -41,8 +42,11 @@
 
         <!-- Barra de pesquisa compacta -->
         <form action="{{ route('fornecedor.index') }}" method="GET" class="mb-4">
+            {{-- // estrutura do formulário de pesquisa --}}
+
             <div class="input-group search-bar shadow-sm">
                 <span class="input-group-text bg-white border-end-0">
+                    {{-- // ícone de pesquisa dentro do campo de pesquisa --}}
                     <i class="bi bi-search text-muted"></i>
 
                 </span>
@@ -72,7 +76,7 @@
             </div>
         @endif
 
-        
+
         <!-- Tabela -->
         <div class="card shadow-sm">
             <div class="card-body p-0">
